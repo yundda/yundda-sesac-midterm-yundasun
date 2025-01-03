@@ -2,24 +2,25 @@
 // getTodos()는 추후에 HTML DOM 내용이 완전히 로드되었을 때 실행되어야 합니다.
 document.addEventListener("DOMContentLoaded", getTodos);
 async function getTodos() {
-  const ul = document.querySelector(".todos");
-  const li = document.createElement("li");
-
-  fetch("https://jsonplaceholder.typicode.com/todos")
-    .then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      const todo10 = res.slice(0, 10);
-      console.log(todo10);
-      // for (i of todo10) {
-      //   li.innerText = i;
-      // }
-      // ul.append(li);
-    })
-    .catch((err) => {
-      console.error(err);
+  try {
+    const response = await axios({
+      method: "get",
+      url: "https://jsonplaceholder.typicode.com/todos",
     });
+
+    console.log(response.data.slice(0, 10));
+    // const { id, userId, title, completed } = response.data;
+    const newhtml = `
+          <tr id = "tr_${id}">
+          <td>${userId}</td>
+          <td>${title}</td>
+          <td>${completed}</td>
+          <td><button onclick="deleteVisitor(this,${id})">삭제</button></td>
+        </tr>
+    `;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 /* 
@@ -52,12 +53,12 @@ function addTodo(e) {
 
 /*  3. x 버튼을 클릭하면 클릭한 버튼을 갖는 Todo 항목이 삭제됩니다. */
 // 삭제 함수의 이름 및 모양 변경 가능
-const del = document.querySelector(".del");
-del.addEventListener("onclick", deleteTodo);
-function deleteTodo(item) {
-  console.log(del);
-  del.parentElement.value = "";
-}
+// const del = document.querySelector(".del");
+// del.addEventListener("onclick", deleteTodo);
+// function deleteTodo(item) {
+//   console.log(del);
+//   del.parentElement.value = "";
+// }
 
 /* 
  4. Todo 목록 불러오기,  
